@@ -1,0 +1,26 @@
+name: Publicar site de teste
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Publicar no subdomínio de teste via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.gestconsaude.com.br
+          username: fabrizio@gestconsaude.com.br
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          server-dir: /public_html/novo.gestconsaude.com.br/
+          dangerous-clean-slate: false
